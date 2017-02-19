@@ -1,11 +1,14 @@
 chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
     var site_url = document.getElementById("site_url");
+    if(typeof(localStorage.lastKeyword)!="undefined")
+        document.getElementById("input_keyword").value = localStorage.lastKeyword;
     var full_url = tabs[0].url;
-    var host = full_url.replace(/\w*:\/\/([^\/]*)\/.*/, "$1");
-    site_url.value = host;
+    site_url.value = full_url.replace(/\w*:\/\/([^\/]*)\/.*/, "$1");
     var submit_button = document.getElementById("submit");
     submit_button.onclick=function(){
         var keyword = document.getElementById("input_keyword").value;
+        localStorage.lastKeyword = keyword;
+        var host = site_url.value;
         var baidu = document.getElementById("use_baidu");
         if (baidu.checked) {
             window.open("http://www.baidu.com/s?wd=site:("+ host +")+" + keyword);
